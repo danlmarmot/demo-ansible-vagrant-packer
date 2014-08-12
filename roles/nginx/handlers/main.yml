@@ -1,0 +1,7 @@
+---
+ - name: restart nginx
+   service: name=nginx state=restarted
+   notify: verify nginx
+
+ - name: verify nginx
+   shell: curl 127.0.0.1:8080

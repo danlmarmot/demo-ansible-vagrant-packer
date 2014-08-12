@@ -1,0 +1,28 @@
+---
+ - name: add nginx ppa repository
+   apt_repository: repo='ppa:nginx/stable'
+
+ - name: install nginx
+   apt: pkg=nginx state=installed
+
+ - name: remove default site
+   file: path=/etc/nginx/sites-enabled/default state=absent
+   notify: restart nginx
+
+ - name: add our nginx.conf
+   copy: src=nginx.conf dest=/etc/nginx/nginx.conf owner=root group=root mode=644
+   notify: restart nginx
+
+ - name: add static directory
+   file: path=/opt/static state=directory
+
+ - name: add static site index.htm file
+   copy: src=index.html dest=/opt/static/index.html owner=root group=root mode=644
+   notify: restart nginx
+   
+ - name: add nginx config file for static site
+   copy: src=static.conf dest=/etc/nginx/conf.d/static.conf owner=root group=root mode=644
+   notify: restart nginx
+
+ - name: start nginx
+   service: name=nginx state=started
