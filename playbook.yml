@@ -1,0 +1,10 @@
+---
+- name: Verify ansible works
+  hosts: all
+  user: vagrant
+  sudo: yes
+  gather_facts: false
+
+  tasks:
+    - name: Create /tmp/foo
+      file: path=/tmp/foo state=directory
